@@ -14,6 +14,7 @@ object juego{
   		game.height(pantallaY)
   		game.cellSize(50)
   		game.title("Juego")
+  		game.boardGround("background.jpg")
   	
   		game.addVisualCharacter(jugador)
   		

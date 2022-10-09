@@ -23,7 +23,6 @@ object juego{
   		musicaDeFondo.shouldLoop(true)})
   	
   		//COLISION CON ENEMIGOS
-  	
   		game.whenCollideDo(jugador, { elemento => 
     		game.say(jugador, "Auch")
     		jugador.vida(jugador.vida() - 1)
@@ -33,13 +32,17 @@ object juego{
     		enemigos.remove(elemento)
     		elemento.destroy()
   		})
-  		
+  		//COLISION CON BALAS
+  		/*game.whenCollideDo(jugador.balas(), { elemento => 
+    		enemigos.remove(elemento)
+    		elemento.destroy()
+  		})*/
   		//SPAWNEAR ENEMIGOS
   		self.spawnearEnemigos()
   		//MOVER ENEMIGOS
   		game.onTick(500, "moverse", {enemigos.forEach(	{e => e.moverse()
   														if(e.position().x() < 0){enemigos.remove(e) game.removeVisual(e)}
-  														})	} )
+  														})	} ) //Crear metodo
   		//SPRINT ENEMIGOS
   		enemigos.forEach({e => e.cambiarImagen()})
   		game.onTick(800, "sprint", {enemigos.forEach({e => e.cambiarImagen()})})

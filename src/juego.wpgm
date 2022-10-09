@@ -3,8 +3,10 @@ import Jugador.*
 import Enemigo.*
 import Character.*
 import juego.*
+import Vida.*
 
 program juego{ 
 		juego.iniciar() 
   		game.start()
 }
+ 

@@ -2,6 +2,7 @@ import wollok.game.*
 import Jugador.*
 import Enemigo.*
 import Character.*
+import Vida.*
 
 object juego{
 	var property tiempoDeSpawn = 3000
@@ -15,9 +16,8 @@ object juego{
   		game.cellSize(50)
   		game.title("Juego")
   		game.boardGround("background.jpg")
-  	
   		game.addVisualCharacter(jugador)
-  		
+  		self.anadirVidas()
   	
   		game.schedule(10, {musicaDeFondo.play()
   		musicaDeFondo.shouldLoop(true)})
@@ -25,10 +25,25 @@ object juego{
   		//COLISION CON ENEMIGOS
   		game.whenCollideDo(jugador, { elemento => 
     		game.say(jugador, "Auch")
+    		
+    		if(jugador.vida()==3){
+    			vida3.image("heartGrey.png")
+    			//game.removeVisual(vida3)
+    		}
+    		else if(jugador.vida()==2){
+    			game.removeVisual(vida2)
+    		}
+    		else if(jugador.vida()==1){
+    			game.removeVisual(vida1)
+    		}
+    		
     		jugador.vida(jugador.vida() - 1)
     		if(jugador.vida() == 0){
     			jugador.destroy()
     		}
+    		
+    		
+    		
     		enemigos.remove(elemento)
     		elemento.destroy()
   		})
@@ -63,6 +78,16 @@ object juego{
   			enemigos.add(enemigo)										
   		})
   	}
+  	
+  	method anadirVidas(){
+ 	//Vida 1
+  			game.addVisual(vida1)  	
+	//Vida 2
+  			game.addVisual(vida2)  		  	
+	//Vida 3
+  			game.addVisual(vida3)  			
+  	}
+  	
 }
 
 //SONIDOS
@@ -74,3 +99,9 @@ const jugador = new Jugador(image = "jugador1.png",
 							tiempoDeathSound = 1000
 							)
 //OBJETOS
+ 	//Vida 1
+  			const vida1 = new Vida(position = game.at(0, 13), image = "heartRed.png")
+	//Vida 2
+  			const vida2 = new Vida(position = game.at(1, 13), image = "heartRed.png")
+	//Vida 3
+  			const vida3 = new Vida(position = game.at(2, 13), image = "heartRed.png")

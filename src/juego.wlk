@@ -28,13 +28,12 @@ object juego{
     		
     		if(jugador.vida()==3){
     			vida3.image("heartGrey.png")
-    			//game.removeVisual(vida3)
     		}
     		else if(jugador.vida()==2){
-    			game.removeVisual(vida2)
+    			vida2.image("heartGrey.png")
     		}
     		else if(jugador.vida()==1){
-    			game.removeVisual(vida1)
+    			vida1.image("heartGrey.png")
     		}
     		
     		jugador.vida(jugador.vida() - 1)

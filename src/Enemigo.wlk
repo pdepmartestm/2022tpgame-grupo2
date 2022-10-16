@@ -5,6 +5,7 @@ import juego.*
 class Enemigo inherits Character {
 	var irAbajo
   	const tiempoSprint = 50
+  	var vida
  	
  	method moverse(){
  			self.verificarLimitaciones()
@@ -40,4 +41,24 @@ class Enemigo inherits Character {
  		game.schedule(tiempoSprint*15, {image = "enemigo1.png"})
  		game.schedule(tiempoSprint*16, {image = "enemigo2.png"})
  	}
+ 	method colision(){
+ 		vida--
+ 		if(vida <= 0){
+ 			juego.enemigos().remove(self)
+    		self.destroy()
+ 		}
+ 	}
+ 	method colisionJugador(){
+ 		juego.jugador().colisionEnemigo()
+    	juego.enemigos().remove(self)
+    	self.destroy()
+ 	}
+ 	
 }
+
+/*object movimientoAlternado{
+	method moverse(x,y){
+		
+		return game.at(x, y)
+	}
+}*/

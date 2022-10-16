@@ -5,19 +5,21 @@ import Jugador.*
 
 class Bala inherits Character{
 	method moverse(){
+		self.verificarLimitaciones()
  		position = position.right(1)
  	}
  	method verificarLimitaciones(){
- 		if(position.x() < 0){
+ 		if(position.x() > juego.pantallaX()){
  			juego.jugador().balas().remove(self) 
  			game.removeVisual(self)
  		}
  	}
  	method colisionEnemigo(){
-  		game.whenCollideDo(self, { enemigo => 
-    								  juego.enemigos().remove(enemigo)
-    								  enemigo.destroy()
+  		game.whenCollideDo(self, { objeto => 
+    								  objeto.colision()
     								  juego.jugador().balas().remove(self)
     								  self.destroy()})
   	}
+  	method colisionJugador(){}
+  	method colision(){}
 }

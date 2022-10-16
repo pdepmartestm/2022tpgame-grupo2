@@ -1,11 +1,13 @@
 import wollok.game.*
 import Character.* 
 import Bala.*
+import juego.*
 
 class Jugador inherits Character{
   var property vida = 3
   const tiempoSprint = 75
   const property balas = []
+  const sonidoDisparo = game.sound("disparo.wav")
   method cambiarImagen(){ //Hacerlo generico con un for y concatenacion
   	game.schedule(tiempoSprint, {image = "jugador1.png"})
  	game.schedule(tiempoSprint*2, {image = "jugador2.png"})
@@ -15,6 +17,8 @@ class Jugador inherits Character{
   
   method disparar(){
   	if(vida > 0){
+  		//sonidoDisparo.play()
+  		//game.schedule(10, {sonidoDisparo.stop()})
   		const bala = new Bala(image = "bala.png", 
   										position = position.right(1),
   										sonidoDestroy = game.sound("impactoBala.wav"),
@@ -23,5 +27,25 @@ class Jugador inherits Character{
   		game.addVisual(bala)
   		balas.add(bala)	
   	}	
+  }
+  method colision(){}
+  method colisionEnemigo(){
+  	game.say(self, "Auch")
+    		
+    if(vida == 3){
+    	juego.vida3().image("heartGrey.png")
+    }
+    else if(vida == 2){
+    	juego.vida2().image("heartGrey.png")
+    }
+    else if(vida == 1){
+    	juego.vida1().image("heartGrey.png")
+    }
+    		
+    vida --
+    		
+    if(vida == 0){
+    	self.destroy()
+    }
   }
 }

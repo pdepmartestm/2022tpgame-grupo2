@@ -1,12 +1,12 @@
 import wollok.game.*
-import Character.* 
+import Character.*
+import juego.* 
 
 class Enemigo inherits Character {
 	var irAbajo
-  	var tiempoSprint = 50
+  	const tiempoSprint = 50
  	
  	method moverse(){
- 			
  			self.verificarLimitaciones()
  			if(irAbajo == 1){position = position.down(1).left(1)}
  			else{position = position.up(1).left(1)}
@@ -19,6 +19,7 @@ class Enemigo inherits Character {
  		if( position.y() >= 13){
  			irAbajo = 1
  		}
+ 		if(position.x() < 0){juego.enemigos().remove(self) game.removeVisual(self)}
  	}
  	
  	method cambiarImagen(){ 

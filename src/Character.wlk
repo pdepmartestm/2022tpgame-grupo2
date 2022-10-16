@@ -7,7 +7,7 @@ class Character {
 	
 	method destroy() {
 		sonidoDestroy.play()
-		game.schedule(tiempoDeathSound,{sonidoDestroy.stop()})
+		game.schedule(tiempoDeathSound,{sonidoDestroy.stop()}) //Para que pare el sonido
 		game.removeVisual(self)
 	}
 }

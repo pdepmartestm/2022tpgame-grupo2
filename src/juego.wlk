@@ -9,6 +9,11 @@ object juego{
 	const pantallaX = 23
 	const pantallaY = 14
 	const property enemigos = []
+	const property jugador = new Jugador(image = "jugador1.png", 
+							position = game.origin(), 
+							sonidoDestroy = game.sound("death.wav"),
+							tiempoDeathSound = 1000
+							)
 	
   	method iniciar(){
   		game.width(pantallaX)
@@ -37,26 +42,31 @@ object juego{
     		}
     		
     		jugador.vida(jugador.vida() - 1)
+    		
     		if(jugador.vida() == 0){
     			jugador.destroy()
     		}
     		
-    		
-    		
     		enemigos.remove(elemento)
     		elemento.destroy()
   		})
+  		
+  		//DISPARAR
+  	
+  		keyboard.enter().onPressDo { jugador.disparar() } 
+  		
   		//COLISION CON BALAS
-  		/*game.whenCollideDo(jugador.balas(), { elemento => 
-    		enemigos.remove(elemento)
-    		elemento.destroy()
-  		})*/
+  		game.onTick(100, "sprint", {
+  									jugador.balas().forEach({b => b.colisionEnemigo()}) 
+  									})
+  		
+  								
   		//SPAWNEAR ENEMIGOS
   		self.spawnearEnemigos()
   		//MOVER ENEMIGOS
-  		game.onTick(500, "moverse", {enemigos.forEach(	{e => e.moverse()
-  														if(e.position().x() < 0){enemigos.remove(e) game.removeVisual(e)}
-  														})	} ) //Crear metodo
+  		game.onTick(500, "mover_enemigos", {self.moverEnemigos()}) 
+  		//MOVER BALAS
+  		game.onTick(100, "movers_balas", {self.moverBalas()})
   		//SPRINT ENEMIGOS
   		enemigos.forEach({e => e.cambiarImagen()})
   		game.onTick(800, "sprint", {enemigos.forEach({e => e.cambiarImagen()})})
@@ -86,17 +96,21 @@ object juego{
 	//Vida 3
   			game.addVisual(vida3)  			
   	}
-  	
+  	method moverEnemigos(){
+  		enemigos.forEach({e => e.moverse()})
+  	}
+  	method moverBalas(){
+  		jugador.balas().forEach(	{b => b.moverse()
+  							if(b.position().x() > pantallaX){jugador.balas().remove(b) game.removeVisual(b)}
+  							}
+  						)
+  	}
 }
 
 //SONIDOS
 const musicaDeFondo = game.sound("BackgroundSound.mp3")
 //JUGADORES
-const jugador = new Jugador(image = "jugador1.png", 
-							position = game.origin(), 
-							sonidoDestroy = game.sound("death.wav"),
-							tiempoDeathSound = 1000
-							)
+
 //OBJETOS
  	//Vida 1
   			const vida1 = new Vida(position = game.at(0, 13), image = "heartRed.png")

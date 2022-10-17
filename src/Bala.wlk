@@ -39,14 +39,14 @@ object bala {
 }
 
 object bomba {
-	var property velocidad = 2
+	var property velocidad = 1000
 	var property rango = 5
 	var property image = "bomba.png"
 	var property icon = "bombaIcon.png"
 }
 
 object misil {
-	var property velocidad = 3
+	var property velocidad = 2000
 	var property rango = 10
 	var property image = "misil.png"
 	var property icon = "misilIcon.png"

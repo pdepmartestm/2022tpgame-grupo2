@@ -3,6 +3,7 @@ import Jugador.*
 import Enemigo.*
 import Character.*
 import Vida.*
+import Bala.*
 
 object juego{
 	var property tiempoDeSpawn = 3000
@@ -49,6 +50,22 @@ object juego{
   		//game.onTick(1000, "aumentar_dificultad", {self.aumentarDificultad()} )
   		//SPAWNEAR ENEMIGOS
   		self.spawnearEnemigos(tiempoDeSpawn)
+  		
+  		//CAMBIO DE ARMAS
+  		keyboard.num1().onPressDo { 
+  			self.cambiarArma(bala)
+  		} 
+  		 keyboard.num2().onPressDo { 
+  		self.cambiarArma(bomba)
+  		} 
+  		 keyboard.num3().onPressDo { 
+  		self.cambiarArma(misil)
+  		}   	
+  		}
+  
+  	method cambiarArma(armaNueva){
+  		jugador.cambiarArma(armaNueva)
+  			armaActual.image(armaNueva.icon())
   	}
   
   	method spawnearEnemigos(tiempo){

@@ -7,7 +7,7 @@ class Jugador inherits Character{
   var property vida = 3
   const tiempoSprint = 75
   const property balas = []
-  var property armaActual = misil
+  var property armaActual = bala
   //const sonidoDisparo = game.sound("disparo.wav")
   
   method cambiarImagen(){ //Hacerlo generico con un for y concatenacion
@@ -16,6 +16,11 @@ class Jugador inherits Character{
  	game.schedule(tiempoSprint*3, {image = "jugador3.png"})
  	game.schedule(tiempoSprint*4, {image = "jugador4.png"})
   }
+  
+  method cambiarArma(nuevaArma){
+  	armaActual = nuevaArma
+  }
+  
   
   method disparar(){
   	if(vida > 0){

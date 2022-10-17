@@ -45,22 +45,42 @@ object juego{
   		//SPRINTS
   		self.gestionarSprints()
   		//AUMENTAR DIFICULTAD
-  		game.onTick(1000, "aumentar_dificultad", {self.aumentarDificultad()} )
+  		//game.onTick(1000, "aumentar_dificultad", {self.aumentarDificultad()} )
   		//SPAWNEAR ENEMIGOS
   		self.spawnearEnemigos(tiempoDeSpawn)
   	}
   
   	method spawnearEnemigos(tiempo){
-  		game.onTick(tiempo, "crearEnemigo", {
-  			const enemigo = new Enemigo(image = "enemigo1.png", 
+  		game.onTick(tiempo, "crearAlien", {
+  			const alien = new Alien(  image = "enemigo1.png", 
   										position = game.at(pantallaX - 1, 0.randomUpTo(pantallaY)), 
   										irAbajo = 1.randomUpTo(0),
   										sonidoDestroy = game.sound("alienDeath.wav"),
   										tiempoDeathSound = 300,
   										vida = 1
-  										)
-  			game.addVisual(enemigo)
-  			enemigos.add(enemigo)										
+  									  )
+  			game.addVisual(alien)
+  			enemigos.add(alien)										
+  		})
+  		game.onTick(tiempo + 3000 , "crearUfo", {
+  			const ufo = new Ufo(  image = "U1.png", 
+  										position = game.at(pantallaX - 1, 0.randomUpTo(pantallaY)), 
+  										sonidoDestroy = game.sound("alienDeath.wav"),
+  										tiempoDeathSound = 300,
+  										vida = 2
+  									  )
+  			game.addVisual(ufo)
+  			enemigos.add(ufo)										
+  		})
+  		game.onTick(tiempo + 3000 , "crearUfo", {
+  			const nave = new NaveX(  image = "B1.png", 
+  										position = game.at(0.randomUpTo(pantallaX), pantallaY - 1), 
+  										sonidoDestroy = game.sound("alienDeath.wav"),
+  										tiempoDeathSound = 300,
+  										vida = 3
+  									  )
+  			game.addVisual(nave)
+  			enemigos.add(nave)										
   		})
   	}
   	

@@ -3,15 +3,31 @@ import Character.*
 import juego.* 
 
 class Enemigo inherits Character {
-	var irAbajo
-  	const tiempoSprint = 50
+  	var tiempoSprint = 50
   	var vida
  	
- 	method moverse(){
+ 	method colision(){
+ 		vida--
+ 		if(vida <= 0){
+ 			juego.enemigos().remove(self)
+    		self.destroy()
+ 		}
+ 	}
+ 	method colisionJugador(){
+ 		juego.jugador().colisionEnemigo()
+    	juego.enemigos().remove(self)
+    	self.destroy()
+ 	}
+ 	
+}
+
+class Alien inherits Enemigo {
+	var irAbajo
+	
+	method moverse(){
  			self.verificarLimitaciones()
  			if(irAbajo == 1){position = position.down(1).left(1)}
  			else{position = position.up(1).left(1)}
- 	
  	}
  	method verificarLimitaciones(){
  		if( position.y() <= 0 ){
@@ -22,8 +38,8 @@ class Enemigo inherits Character {
  		}
  		if(position.x() < 0){juego.enemigos().remove(self) game.removeVisual(self)}
  	}
- 	
- 	method cambiarImagen(){ 
+	
+	method cambiarImagen(){ 
  		game.schedule(tiempoSprint, {image = "enemigo3.png"})
  		game.schedule(tiempoSprint*2, {image = "enemigo4.png"})
  		game.schedule(tiempoSprint*3, {image = "enemigo5.png"})
@@ -41,24 +57,48 @@ class Enemigo inherits Character {
  		game.schedule(tiempoSprint*15, {image = "enemigo1.png"})
  		game.schedule(tiempoSprint*16, {image = "enemigo2.png"})
  	}
- 	method colision(){
- 		vida--
- 		if(vida <= 0){
- 			juego.enemigos().remove(self)
-    		self.destroy()
- 		}
- 	}
- 	method colisionJugador(){
- 		juego.jugador().colisionEnemigo()
-    	juego.enemigos().remove(self)
-    	self.destroy()
- 	}
- 	
 }
 
-/*object movimientoAlternado{
-	method moverse(x,y){
-		
-		return game.at(x, y)
-	}
-}*/
+class Ufo inherits Enemigo {
+	
+	method moverse(){
+ 			self.verificarLimitaciones()
+ 			position = position.left(1)		
+ 	}
+ 	method verificarLimitaciones(){
+ 		if(position.x() < 0){juego.enemigos().remove(self) game.removeVisual(self)}
+ 	}
+	
+	method cambiarImagen(){ 
+ 		game.schedule(tiempoSprint, {image = "U2.png"})
+ 		game.schedule(tiempoSprint*2, {image = "U3.png"})
+ 		game.schedule(tiempoSprint*3, {image = "U4.png"})
+ 		game.schedule(tiempoSprint*4, {image = "U5.png"})
+ 		game.schedule(tiempoSprint*5, {image = "U6.png"})
+ 		game.schedule(tiempoSprint*6, {image = "U1.png"})
+ 	}
+}
+
+class NaveX inherits Enemigo {
+	
+	method moverse(){
+ 			self.verificarLimitaciones()
+ 			position = position.down(1)		
+ 	}
+ 	method verificarLimitaciones(){
+ 		if(position.y() < 0){juego.enemigos().remove(self) game.removeVisual(self)}
+ 	}
+	
+	method cambiarImagen(){ 
+ 		game.schedule(tiempoSprint, {image = "B2.png"})
+ 		game.schedule(tiempoSprint*2, {image = "B3.png"})
+ 		game.schedule(tiempoSprint*3, {image = "B4.png"})
+ 		game.schedule(tiempoSprint*4, {image = "B5.png"})
+ 		game.schedule(tiempoSprint*5, {image = "B6.png"})
+ 		game.schedule(tiempoSprint*6, {image = "B7.png"})
+ 		game.schedule(tiempoSprint*7, {image = "B8.png"})
+ 		game.schedule(tiempoSprint*8, {image = "B9.png"})
+ 		game.schedule(tiempoSprint*9, {image = "B10.png"})
+ 		game.schedule(tiempoSprint*10, {image = "B1.png"})
+ 	}
+}

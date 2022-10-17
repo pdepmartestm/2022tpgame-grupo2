@@ -19,6 +19,7 @@ object juego{
   	const property vida1 = new Vida(position = game.at(0, 13), image = "heartRed.png")
   	const property vida2 = new Vida(position = game.at(1, 13), image = "heartRed.png")
   	const property vida3 = new Vida(position = game.at(2, 13), image = "heartRed.png")
+	const property armaActual = new Vida(position = game.at(0, 12), image = jugador.armaActual().icon())
 	
   	method iniciar(){
   		game.width(pantallaX)
@@ -37,11 +38,11 @@ object juego{
   		//DISPARAR
   		keyboard.enter().onPressDo { jugador.disparar() } 
   		//COLISION CON BALAS - REVISAR	
-  		game.onTick(100, "sprint", { jugador.balas().forEach({b => b.colisionEnemigo()}) })			
+  		game.onTick(10, "sprint", { jugador.balas().forEach({b => b.colisionEnemigo()}) })			
   		//MOVER ENEMIGOS
   		game.onTick(500, "mover_enemigos", {self.moverEnemigos()}) 
   		//MOVER BALAS
-  		game.onTick(100, "movers_balas", {self.moverBalas()})
+  		game.onTick(100*jugador.armaActual().velocidad(), "movers_balas", {self.moverBalas()})
   		//SPRINTS
   		self.gestionarSprints()
   		//AUMENTAR DIFICULTAD
@@ -90,14 +91,19 @@ object juego{
 	//Vida 2
   			game.addVisual(vida2)  		  	
 	//Vida 3
-  			game.addVisual(vida3)  			
+  			game.addVisual(vida3)  		
+  	//ARMA ACTUAL (NO VA ACA)
+  			game.addVisual(armaActual)  	
   	}
+  	
   	method moverEnemigos(){
   		enemigos.forEach({e => e.moverse()})
   	}
+  	
   	method moverBalas(){
   		jugador.balas().forEach( {b => b.moverse() })
   	}
+  	
   	method gestionarSprints(){
   		//SPRINT ENEMIGOS
   		enemigos.forEach({e => e.cambiarImagen()})

@@ -7,6 +7,7 @@ class Jugador inherits Character{
   var property vida = 3
   const tiempoSprint = 75
   const property balas = []
+  var property armaActual = misil
   //const sonidoDisparo = game.sound("disparo.wav")
   
   method cambiarImagen(){ //Hacerlo generico con un for y concatenacion
@@ -18,9 +19,8 @@ class Jugador inherits Character{
   
   method disparar(){
   	if(vida > 0){
-  		//sonidoDisparo.play()
-  		//game.schedule(10, {sonidoDisparo.stop()})
-  		const bala = new Bala(image = "bala.png", 
+
+  		const bala = new Bala(			image = armaActual.image(), 
   										position = position.right(1),
   										sonidoDestroy = game.sound("impactoBala.wav"),
   										tiempoDeathSound = 300

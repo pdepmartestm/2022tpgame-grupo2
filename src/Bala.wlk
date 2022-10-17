@@ -32,19 +32,22 @@ var property funcionamiento = misil
 }
 
 object bala {
-	var property velocidad = 3
+	var property velocidad = 1
 	var property rango = 3
 	var property image = "bala.png"
+	var property icon = "balaIcon.png"
 }
 
 object bomba {
 	var property velocidad = 2
 	var property rango = 5
 	var property image = "bomba.png"
+	var property icon = "bombaIcon.png"
 }
 
 object misil {
-	var property velocidad = 1
+	var property velocidad = 3
 	var property rango = 10
 	var property image = "misil.png"
+	var property icon = "misilIcon.png"
 }

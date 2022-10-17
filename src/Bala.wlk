@@ -4,7 +4,8 @@ import juego.*
 import Jugador.*
 
 class Bala inherits Character{
-var property funcionamiento = bala
+	
+var property funcionamiento = misil
 	
 	method moverse(){
 		self.verificarLimitaciones()
@@ -33,14 +34,17 @@ var property funcionamiento = bala
 object bala {
 	var property velocidad = 3
 	var property rango = 3
+	var property image = "bala.png"
 }
 
 object bomba {
 	var property velocidad = 2
 	var property rango = 5
+	var property image = "bomba.png"
 }
 
 object misil {
 	var property velocidad = 1
 	var property rango = 10
+	var property image = "misil.png"
 }

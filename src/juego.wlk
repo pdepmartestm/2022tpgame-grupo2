@@ -71,7 +71,7 @@ object juego{
   	}
   
   	method spawnearEnemigos(tiempo){
-  		game.onTick(tiempo, "crearAlien", {
+  		/*game.onTick(tiempo, "crearAlien", {
   			const alien = self.crearAlien()
   			game.addVisual(alien)
   			enemigos.add(alien)										
@@ -80,8 +80,8 @@ object juego{
   			const ufo = self.crearUfo()
   			game.addVisual(ufo)
   			enemigos.add(ufo)										
-  		})
-  		game.onTick(tiempo + 5000 , "crearNaveX", {
+  		})*/
+  		game.onTick(tiempo  , "crearNaveX", {
   			const nave = self.crearNaveX()
   			game.addVisual(nave)
   			enemigos.add(nave)										
@@ -149,8 +149,8 @@ object juego{
   	}
   	method crearNaveX(){
   		return new NaveX(  image = "B1.png", 
-  										//position = game.at(pantallaX - 1, 0.randomUpTo(pantallaY)), 
-  										position = game.at(0.randomUpTo(pantallaX), pantallaY - 1),
+  										position = game.at(pantallaX - 1, 0.randomUpTo(pantallaY)), 
+  										//position = game.at(0.randomUpTo(pantallaX), pantallaY - 1),
   										sonidoDestroy = game.sound("alienDeath.wav"),
   										tiempoDeathSound = 300,
   										vida = 3

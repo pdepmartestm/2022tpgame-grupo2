@@ -11,10 +11,12 @@ class Jugador inherits Character{
   //const sonidoDisparo = game.sound("disparo.wav")
   
   method cambiarImagen(){ //Hacerlo generico con un for y concatenacion
+  	game.onTick(300, "sprint", {
   	game.schedule(tiempoSprint, {image = "jugador1.png"})
  	game.schedule(tiempoSprint*2, {image = "jugador2.png"})
  	game.schedule(tiempoSprint*3, {image = "jugador3.png"})
  	game.schedule(tiempoSprint*4, {image = "jugador4.png"})
+  	})
   }
   
   method cambiarArma(nuevaArma){
@@ -24,12 +26,7 @@ class Jugador inherits Character{
   
   method disparar(){
   	if(vida > 0){
-
-  		const bala = new Bala(			image = armaActual.image(), 
-  										position = position.right(1),
-  										sonidoDestroy = game.sound("impactoBala.wav"),
-  										tiempoDeathSound = 300
-  										)
+  		const bala = armaActual.disparar(position)
   		game.addVisual(bala)
   		balas.add(bala)	
   	}	
@@ -39,16 +36,16 @@ class Jugador inherits Character{
   	game.say(self, "Auch")
     		
     if(vida == 3){
-    	juego.vida3().image("heartGrey.png")
+    	juego.vida3().morir()
     }
     else if(vida == 2){
-    	juego.vida2().image("heartGrey.png")
+    	juego.vida2().morir()
     }
     else if(vida == 1){
-    	juego.vida1().image("heartGrey.png")
+    	juego.vida1().morir()
     }
     		
-    vida --
+    vida = vida - 1
     		
     if(vida == 0){
     	juego.gameOver()

@@ -4,18 +4,15 @@ import juego.*
 import Jugador.*
 
 class Bala inherits Character{
-	
-var property funcionamiento = misil
+	var potencia
+	var tipoMovimiento
 	
 	method moverse(){
 		self.verificarLimitaciones()
- 		position = position.right(1)
+		position = tipoMovimiento.mover(position)
  	}
  	
  	override method colisionEnemigo(){
-  		/*game.whenCollideDo(self, { objeto => 
-    								  objeto.colisionBala()
-    								  self.destroy()})*/
     	self.destroy()
   	}
   	
@@ -24,23 +21,56 @@ var property funcionamiento = misil
  	}
 }
 
-object bala {
-	var property velocidad = 1
-	var property rango = 3
-	var property image = "bala.png"
+class BalaComun inherits Bala (image = "bala.png", potencia = 3, tipoMovimiento = movimientoRectilineo){
+	
+}
+
+class Bomba  inherits Bala (image = "bomba.png", potencia = 2, tipoMovimiento = movimientoDiagonalAbajo){
+	
+}
+
+class Misil inherits Bala (image = "misil.png", potencia = 1, tipoMovimiento = movimientoDiagonalArriba){
+	 
+}
+
+object bala{
 	var property icon = "balaIcon.png"
+	method disparar(pos){
+		return new BalaComun( 	position = pos.right(1),
+  								sonidoDestroy = game.sound("impactoBala.wav"),
+  								tiempoDeathSound = 300 )
+	}
 }
 
 object bomba {
-	var property velocidad = 1000
-	var property rango = 5
-	var property image = "bomba.png"
 	var property icon = "bombaIcon.png"
+	method disparar(pos){
+		return new Bomba( 		position = pos.right(1),
+  								sonidoDestroy = game.sound("impactoBala.wav"),
+  								tiempoDeathSound = 300 )
+	}
 }
 
 object misil {
-	var property velocidad = 2000
-	var property rango = 10
-	var property image = "misil.png"
 	var property icon = "misilIcon.png"
+	method disparar(pos){
+		return new Misil( 		position = pos.right(1),
+  								sonidoDestroy = game.sound("impactoBala.wav"),
+  								tiempoDeathSound = 300 )
+	}
+}
+object movimientoDiagonalArriba{
+	method mover(position){
+		return position.up(1).right(1)
+	}
+}
+object movimientoRectilineo{
+	method mover(position){
+		return position.right(1)
+	}
+}
+object movimientoDiagonalAbajo{
+	method mover(position){
+		return position.down(1).right(1)
+	}
 }

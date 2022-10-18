@@ -5,6 +5,7 @@ import juego.*
 class Enemigo inherits Character {
   	var tiempoSprint = 50
   	var vida
+  	var tipoMovimiento
  	
  	override method colisionBala(bala){
  		bala.colisionEnemigo()
@@ -22,102 +23,94 @@ class Enemigo inherits Character {
  	override method removermeDeListas(){
  		juego.enemigos().remove(self)
  	}
+ 	
+ 	method moverse(){
+ 		self.verificarLimitaciones()
+ 		position = tipoMovimiento.mover(position)
+ 	}
+ 	
+ 	
 }
 
-class Alien inherits Enemigo {
+class Alien inherits Enemigo (image = "enemigo1.png", tiempoDeathSound = 300, vida = 1, tipoMovimiento = movimientoAlternado){
 	var irAbajo
-	
-	method moverse(){
- 			self.verificarSentido()
- 			if(irAbajo == 1){position = position.down(1).left(1)}
- 			else{position = position.up(1).left(1)}
- 	}
- 	method verificarSentido(){
+	override method moverse(){
+		self.verificarLimitaciones()
+		self.verificarSentido()
+ 		position = tipoMovimiento.mover(position, irAbajo)
+	}
+	method verificarSentido(){
  		if( position.y() <= 0 ){
- 			irAbajo = 0
+ 			irAbajo = false
  		}
  		if( position.y() >= 13){
- 			irAbajo = 1
+ 			irAbajo = true
  		}
  	}
-	
 	method cambiarImagen(){ 
- 		game.schedule(tiempoSprint, {image = "enemigo3.png"})
- 		game.schedule(tiempoSprint*2, {image = "enemigo4.png"})
- 		game.schedule(tiempoSprint*3, {image = "enemigo5.png"})
- 		game.schedule(tiempoSprint*4, {image = "enemigo6.png"})
- 		game.schedule(tiempoSprint*5, {image = "enemigo7.png"})
- 		game.schedule(tiempoSprint*6, {image = "enemigo8.png"})
- 		game.schedule(tiempoSprint*7, {image = "enemigo9.png"})
- 		game.schedule(tiempoSprint*8, {image = "enemigo10.png"})
- 		game.schedule(tiempoSprint*9, {image = "enemigo11.png"})
- 		game.schedule(tiempoSprint*10, {image = "enemigo12.png"})
- 		game.schedule(tiempoSprint*11, {image = "enemigo13.png"})
- 		game.schedule(tiempoSprint*12, {image = "enemigo14.png"})
- 		game.schedule(tiempoSprint*13, {image = "enemigo15.png"})
- 		game.schedule(tiempoSprint*14, {image = "enemigo16.png"})
- 		game.schedule(tiempoSprint*15, {image = "enemigo1.png"})
- 		game.schedule(tiempoSprint*16, {image = "enemigo2.png"})
+		16.times({b => game.schedule(tiempoSprint * b, {image = "enemigo"+ b +".png"})})
  	}
 }
 
-class Ufo inherits Enemigo {
-	
-	method moverse(){
- 			self.verificarLimitaciones()
- 			position = position.left(1)		
- 	}
-	
+class Ufo inherits Enemigo (image = "U1.png",  tiempoDeathSound = 300, vida = 2, tipoMovimiento = movimientoRectilineoIzquierdo){
 	method cambiarImagen(){ 
- 		game.schedule(tiempoSprint, {image = "U2.png"})
- 		game.schedule(tiempoSprint*2, {image = "U3.png"})
- 		game.schedule(tiempoSprint*3, {image = "U4.png"})
- 		game.schedule(tiempoSprint*4, {image = "U5.png"})
- 		game.schedule(tiempoSprint*5, {image = "U6.png"})
- 		game.schedule(tiempoSprint*6, {image = "U1.png"})
+		6.times({b => game.schedule(tiempoSprint * b, {image = "U"+ b +".png"})})
  	}
 }
 
-class NaveX inherits Enemigo {
+class NaveX inherits Enemigo ( image = "B1.png", tiempoDeathSound = 300, vida = 3, tipoMovimiento = movimientoDirigido) {
 	
-	method moverse(){
- 			self.verificarLimitaciones()
- 			const pos = juego.jugador().position()
- 			if(position.x() >= pos.x()){
+	method cambiarImagen(){
+		10.times({b => game.schedule(tiempoSprint * b, {image = "B"+ b +".png"})})
+ 	}
+}
+
+object movimientoAlternado{
+	
+	method mover(position, irAbajo){
+		if(irAbajo == true){	return  position.down(1).left(1)}
+ 		else{	return  position.up(1).left(1)}
+ 	}
+} 
+
+object movimientoRectilineoIzquierdo{
+	method mover(position){
+		return  position.left(1)
+ 	}
+}
+
+object movimientoDirigido{
+	method mover(position){
+		const pos = juego.jugador().position()
+ 			if(position.x() > pos.x()){
  				if(pos.y() < position.y()){
- 				position = position.down(1).left(1)
+ 					return position.down(1).left(1)
  				}
  				else if(pos.y() > position.y()){
- 				position = position.up(1).left(1)
+ 					return position.up(1).left(1)
  				}
- 				else if(pos.y() == position.y()){
- 				position = position.left(1)
+ 				else {
+ 					return position.left(1)
  				}	
  			}
- 			else{
+ 			else if (position.x() < pos.x()){
  				if(pos.y() < position.y()){
- 				position = position.down(1).right(1)
+ 					return position.down(1).right(1)
  				}
  				else if(pos.y() > position.y()){
- 				position = position.up(1).right(1)
+ 					return position.up(1).right(1)
  				}
- 				else if(pos.y() == position.y()){
- 				position = position.right(1)
+ 				else {
+ 					return position.right(1)
  				}	
  			}
- 			
- 	}
-	
-	method cambiarImagen(){ 
- 		game.schedule(tiempoSprint, {image = "B2.png"})
- 		game.schedule(tiempoSprint*2, {image = "B3.png"})
- 		game.schedule(tiempoSprint*3, {image = "B4.png"})
- 		game.schedule(tiempoSprint*4, {image = "B5.png"})
- 		game.schedule(tiempoSprint*5, {image = "B6.png"})
- 		game.schedule(tiempoSprint*6, {image = "B7.png"})
- 		game.schedule(tiempoSprint*7, {image = "B8.png"})
- 		game.schedule(tiempoSprint*8, {image = "B9.png"})
- 		game.schedule(tiempoSprint*9, {image = "B10.png"})
- 		game.schedule(tiempoSprint*10, {image = "B1.png"})
- 	}
+ 			else {
+ 				if(pos.y() < position.y()){
+ 					return position.down(1)
+ 				}
+ 				else{
+ 					return position.up(1)
+ 				}
+ 			}
+	}
 }

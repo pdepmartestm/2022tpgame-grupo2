@@ -17,9 +17,10 @@ object juego{
 	const musicaDeFondo = game.sound("BackgroundSound.mp3")
 	const musicaGameOver = game.sound("gameOver.mp3")
 
-  	const property vida1 = new Imprimible(position = game.at(0, 13), image = "heartRed.png")
-  	const property vida2 = new Imprimible(position = game.at(1, 13), image = "heartRed.png")
-  	const property vida3 = new Imprimible(position = game.at(2, 13), image = "heartRed.png")
+  	const property vida1 = new Vida(position = game.at(0, 13))
+  	const property vida2 = new Vida(position = game.at(1, 13))
+  	const property vida3 = new Vida(position = game.at(2, 13))
+  	
 	const property armaActual = new Imprimible(position = game.at(0, 12), image = jugador.armaActual().icon())
 	const gameOver = new Imprimible(position = game.at(9, 8), image = "gameOver.png")
   	method iniciar(){
@@ -41,11 +42,11 @@ object juego{
   		//COLISION CON BALAS - REVISAR
   		game.onTick(100, "sprint", { jugador.balas().forEach({b => 
   															game.whenCollideDo(b, { objeto => 
-    								  						objeto.colisionBala(b)}) }) })			
+    								  						objeto.colisionBala(b)}) }) })		
   		//MOVER ENEMIGOS
   		game.onTick(500, "mover_enemigos", {self.moverEnemigos()}) 
   		//MOVER BALAS
-  		game.onTick(100*jugador.armaActual().velocidad(), "movers_balas", {self.moverBalas()})
+  		game.onTick(100, "movers_balas", {self.moverBalas()})
   		//SPRINTS
   		self.gestionarSprints()
   		//AUMENTAR DIFICULTAD - REVISAR
@@ -58,12 +59,12 @@ object juego{
   			self.cambiarArma(bala)
   		} 
   		 keyboard.num2().onPressDo { 
-  		self.cambiarArma(bomba)
+  			self.cambiarArma(bomba)
   		} 
   		 keyboard.num3().onPressDo { 
-  		self.cambiarArma(misil)
+  			self.cambiarArma(misil)
   		}   	
-  		}
+  	}
   
   	method cambiarArma(armaNueva){
   		jugador.cambiarArma(armaNueva)
@@ -71,7 +72,7 @@ object juego{
   	}
   
   	method spawnearEnemigos(tiempo){
-  		/*game.onTick(tiempo, "crearAlien", {
+  		game.onTick(tiempo, "crearAlien", {
   			const alien = self.crearAlien()
   			game.addVisual(alien)
   			enemigos.add(alien)										
@@ -80,8 +81,8 @@ object juego{
   			const ufo = self.crearUfo()
   			game.addVisual(ufo)
   			enemigos.add(ufo)										
-  		})*/
-  		game.onTick(tiempo  , "crearNaveX", {
+  		})
+  		game.onTick(tiempo + 5000 , "crearNaveX", {
   			const nave = self.crearNaveX()
   			game.addVisual(nave)
   			enemigos.add(nave)										
@@ -89,11 +90,8 @@ object juego{
   	}
   	
   	method anadirVidas(){
- 	//Vida 1
   			self.imprimir(vida1)  	
-	//Vida 2
-  			self.imprimir(vida2)  		  	
-	//Vida 3
+  			self.imprimir(vida2) 
   			self.imprimir(vida3)  		
   	//ARMA ACTUAL (NO VA ACA)
   			self.imprimir(armaActual)  	
@@ -113,7 +111,6 @@ object juego{
   		game.onTick(800, "sprint", {enemigos.forEach({e => e.cambiarImagen()})})
   		//SPRINT JUGADOR
   		jugador.cambiarImagen()
-  		game.onTick(300, "sprint", {jugador.cambiarImagen()})
   	}
   	method aumentarDificultad(){
   		if(tiempoDeSpawn > 500){
@@ -131,30 +128,22 @@ object juego{
   		game.addVisual(algo)
   	}
   	method crearAlien(){
-  		return new Alien(  image = "enemigo1.png", 
-  										position = game.at(pantallaX - 1, 0.randomUpTo(pantallaY)), 
-  										irAbajo = 1.randomUpTo(0),
-  										sonidoDestroy = game.sound("alienDeath.wav"),
-  										tiempoDeathSound = 300,
-  										vida = 1
-  									  )
+  		return new Alien(	position = game.at(pantallaX - 1, 0.randomUpTo(pantallaY)), 
+  							sonidoDestroy = game.sound("alienDeath.wav"),
+  							irAbajo = true
+  						)
   	}
   	method crearUfo(){
-  		return new Ufo(  image = "U1.png", 
-  										position = game.at(pantallaX - 1, 5), 
-  										sonidoDestroy = game.sound("alienDeath.wav"),
-  										tiempoDeathSound = 300,
-  										vida = 2
-  									  )
+  		return new Ufo(  	position = game.at(pantallaX - 1, 5), 
+  							sonidoDestroy = game.sound("alienDeath.wav")
+  										
+  						)
   	}
   	method crearNaveX(){
-  		return new NaveX(  image = "B1.png", 
-  										position = game.at(pantallaX - 1, 0.randomUpTo(pantallaY)), 
-  										//position = game.at(0.randomUpTo(pantallaX), pantallaY - 1),
-  										sonidoDestroy = game.sound("alienDeath.wav"),
-  										tiempoDeathSound = 300,
-  										vida = 3
-  									  )
+  		return new NaveX( 	position = game.at(pantallaX - 1, 0.randomUpTo(pantallaY)), 
+  							sonidoDestroy = game.sound("alienDeath.wav")
+  										
+  						)
   	}
 }
 

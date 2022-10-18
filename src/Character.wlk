@@ -12,6 +12,12 @@ class Imprimible {
   	method colisionEnemigo(){}
 	
 }
+class Vida inherits Imprimible (image = "heartRed.png"){
+	method morir(){
+		image = "heartGrey.png"
+	}
+	
+}
 class Character inherits Imprimible{
 	
 	var sonidoDestroy

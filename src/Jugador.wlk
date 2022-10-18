@@ -28,7 +28,8 @@ class Jugador inherits Character{
   		const bala = new Bala(			image = armaActual.image(), 
   										position = position.right(1),
   										sonidoDestroy = game.sound("impactoBala.wav"),
-  										tiempoDeathSound = 300
+  										tiempoDeathSound = 300,
+  										funcionamiento = armaActual
   										)
   		game.addVisual(bala)
   		balas.add(bala)	

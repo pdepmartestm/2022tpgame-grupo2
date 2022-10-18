@@ -39,13 +39,13 @@ object juego{
   		//DISPARAR
   		keyboard.enter().onPressDo { jugador.disparar() } 
   		//COLISION CON BALAS - REVISAR
-  		game.onTick(100, "sprint", { jugador.balas().forEach({b => 
+  		game.onTick(1, "sprint", { jugador.balas().forEach({b => 
   															game.whenCollideDo(b, { objeto => 
     								  						objeto.colisionBala(b)}) }) })			
   		//MOVER ENEMIGOS
   		game.onTick(500, "mover_enemigos", {self.moverEnemigos()}) 
   		//MOVER BALAS
-  		game.onTick(100*jugador.armaActual().velocidad(), "movers_balas", {self.moverBalas()})
+  		game.onTick(100, "movers_balas", {self.moverBalas()})
   		//SPRINTS
   		self.gestionarSprints()
   		//AUMENTAR DIFICULTAD - REVISAR
@@ -71,7 +71,7 @@ object juego{
   	}
   
   	method spawnearEnemigos(tiempo){
-  		/*game.onTick(tiempo, "crearAlien", {
+  		game.onTick(tiempo, "crearAlien", {
   			const alien = self.crearAlien()
   			game.addVisual(alien)
   			enemigos.add(alien)										
@@ -80,8 +80,8 @@ object juego{
   			const ufo = self.crearUfo()
   			game.addVisual(ufo)
   			enemigos.add(ufo)										
-  		})*/
-  		game.onTick(tiempo  , "crearNaveX", {
+  		})
+  		game.onTick(tiempo + 5000 , "crearNaveX", {
   			const nave = self.crearNaveX()
   			game.addVisual(nave)
   			enemigos.add(nave)										
@@ -149,8 +149,8 @@ object juego{
   	}
   	method crearNaveX(){
   		return new NaveX(  image = "B1.png", 
-  										position = game.at(pantallaX - 1, 0.randomUpTo(pantallaY)), 
-  										//position = game.at(0.randomUpTo(pantallaX), pantallaY - 1),
+  										//position = game.at(pantallaX - 1, 0.randomUpTo(pantallaY)), 
+  										position = game.at(0.randomUpTo(pantallaX), pantallaY - 1),
   										sonidoDestroy = game.sound("alienDeath.wav"),
   										tiempoDeathSound = 300,
   										vida = 3

@@ -82,30 +82,17 @@ class NaveX inherits Enemigo {
 	
 	method moverse(){
  			self.verificarLimitaciones()
- 			const pos = juego.jugador().position()
- 			if(position.x() >= pos.x()){
- 				if(pos.y() < position.y()){
- 				position = position.down(1).left(1)
- 				}
- 				else if(pos.y() > position.y()){
- 				position = position.up(1).left(1)
- 				}
- 				else if(pos.y() == position.y()){
- 				position = position.left(1)
- 				}	
- 			}
- 			else{
- 				if(pos.y() < position.y()){
+ 			position = position.down(1)
+ 			/*const posY = juego.jugador().position().y()
+ 			if(posY < position.y()){
  				position = position.down(1).right(1)
- 				}
- 				else if(pos.y() > position.y()){
- 				position = position.up(1).right(1)
- 				}
- 				else if(pos.y() == position.y()){
- 				position = position.right(1)
- 				}	
  			}
- 			
+ 			else if(posY > position.y()){
+ 				position = position.up(1).right(1)
+ 			}
+ 			else if(posY == position.y()){
+ 				position = position.right(1)
+ 			}*/		
  	}
 	
 	method cambiarImagen(){ 

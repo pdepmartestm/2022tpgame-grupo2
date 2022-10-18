@@ -5,11 +5,15 @@ import Jugador.*
 
 class Bala inherits Character{
 	
-var property funcionamiento = misil
+var property funcionamiento
 	
 	method moverse(){
+		funcionamiento.velocidad().times({n =>
 		self.verificarLimitaciones()
- 		position = position.right(1)
+		position = position.right(1)
+		/*NECESITO PODER CHEQUEAR POR CADA POSICION NUEVA SI HAY COLISIONADO CON ALGO*/
+		game.colliders(self).forEach({enemigo =>enemigo.colisionBala(self)})
+		})
  	}
  	
  	override method colisionEnemigo(){
@@ -25,22 +29,19 @@ var property funcionamiento = misil
 }
 
 object bala {
-	var property velocidad = 1
-	var property rango = 3
+	var property velocidad = 4
 	var property image = "bala.png"
 	var property icon = "balaIcon.png"
 }
 
 object bomba {
-	var property velocidad = 1000
-	var property rango = 5
+	var property velocidad = 2
 	var property image = "bomba.png"
 	var property icon = "bombaIcon.png"
 }
 
 object misil {
-	var property velocidad = 2000
-	var property rango = 10
+	var property velocidad = 1
 	var property image = "misil.png"
 	var property icon = "misilIcon.png"
 }

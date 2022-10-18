@@ -32,7 +32,12 @@ class Jugador inherits Character{
   										funcionamiento = armaActual
   										)
   		game.addVisual(bala)
-  		balas.add(bala)	
+  		
+  		//Movimiento
+  		balas.add(bala)
+  		game.onTick(100 / bala.funcionamiento().velocidad() , "mover_balas", {bala.moverse()})					
+  	  	game.whenCollideDo(bala, { enemigo =>  enemigo.colisionBala(bala)})
+  	
   	}	
   }
   

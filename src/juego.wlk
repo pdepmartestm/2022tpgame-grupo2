@@ -39,13 +39,13 @@ object juego{
   		//DISPARAR
   		keyboard.enter().onPressDo { jugador.disparar() } 
   		//COLISION CON BALAS - REVISAR
-  		game.onTick(1, "sprint", { jugador.balas().forEach({b => 
+  		/*game.onTick(100, "sprint", { jugador.balas().forEach({b => 
   															game.whenCollideDo(b, { objeto => 
-    								  						objeto.colisionBala(b)}) }) })			
+    								  						objeto.colisionBala(b)}) }) })			*/
   		//MOVER ENEMIGOS
   		game.onTick(500, "mover_enemigos", {self.moverEnemigos()}) 
   		//MOVER BALAS
-  		game.onTick(100, "movers_balas", {self.moverBalas()})
+  		// game.onTick(100, "mover_balas", {self.moverBalas()})
   		//SPRINTS
   		self.gestionarSprints()
   		//AUMENTAR DIFICULTAD - REVISAR
@@ -103,10 +103,7 @@ object juego{
   		enemigos.forEach({e => e.moverse()})
   	}
   	
-  	method moverBalas(){
-  		jugador.balas().forEach( {b => b.moverse() })
-  	}
-  	
+
   	method gestionarSprints(){
   		//SPRINT ENEMIGOS
   		enemigos.forEach({e => e.cambiarImagen()})
@@ -115,6 +112,7 @@ object juego{
   		jugador.cambiarImagen()
   		game.onTick(300, "sprint", {jugador.cambiarImagen()})
   	}
+  	
   	method aumentarDificultad(){
   		if(tiempoDeSpawn > 500){
   			tiempoDeSpawn -= 100	

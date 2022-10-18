@@ -18,9 +18,9 @@ class Character inherits Imprimible{
 	const tiempoDeathSound
 	
 	method destroy() {
-		sonidoDestroy.play()
+		/*sonidoDestroy.play()
 		game.schedule(tiempoDeathSound,{sonidoDestroy.stop()}) //Para que pare el sonido
-		self.salirDelTablero()
+		*/self.salirDelTablero()
 	}
 	method verificarLimitaciones(){
 		if(	position.x() < 0 || 

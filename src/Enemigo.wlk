@@ -8,7 +8,7 @@ class Enemigo inherits Character {
  	
  	override method colisionBala(bala){
  		bala.colisionEnemigo()
- 		vida--
+ 		vida = vida - bala.funcionamiento().vida()
  		if(vida <= 0){
     		self.destroy()
  		}

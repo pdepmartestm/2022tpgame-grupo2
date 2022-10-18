@@ -40,7 +40,7 @@ class Alien inherits Enemigo (image = "enemigo1.png", tiempoDeathSound = 300, vi
  		position = tipoMovimiento.mover(position, irAbajo)
 	}
 	method verificarSentido(){
- 		if( position.y() <= 0 ){
+ 		if( position.y() <= 1 ){
  			irAbajo = false
  		}
  		if( position.y() >= 13){

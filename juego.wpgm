@@ -1,0 +1,11 @@
+import wollok.game.*
+import Jugador.*
+import Enemigo.*
+import Character.*
+import juego.*
+import Bala.*
+
+program juego{ 
+		juego.iniciar() 
+  		game.start()
+}

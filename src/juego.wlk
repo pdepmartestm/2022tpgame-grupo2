@@ -2,7 +2,6 @@ import wollok.game.*
 import Jugador.*
 import Enemigo.*
 import Character.*
-import Vida.*
 import Bala.*
 
 object juego{
@@ -16,12 +15,13 @@ object juego{
 							tiempoDeathSound = 1000
 							)
 	const musicaDeFondo = game.sound("BackgroundSound.mp3")
+	const musicaGameOver = game.sound("gameOver.mp3")
 
-  	const property vida1 = new Vida(position = game.at(0, 13), image = "heartRed.png")
-  	const property vida2 = new Vida(position = game.at(1, 13), image = "heartRed.png")
-  	const property vida3 = new Vida(position = game.at(2, 13), image = "heartRed.png")
-	const property armaActual = new Vida(position = game.at(0, 12), image = jugador.armaActual().icon())
-	
+  	const property vida1 = new Imprimible(position = game.at(0, 13), image = "heartRed.png")
+  	const property vida2 = new Imprimible(position = game.at(1, 13), image = "heartRed.png")
+  	const property vida3 = new Imprimible(position = game.at(2, 13), image = "heartRed.png")
+	const property armaActual = new Imprimible(position = game.at(0, 12), image = jugador.armaActual().icon())
+	const gameOver = new Imprimible(position = game.at(9, 8), image = "gameOver.png")
   	method iniciar(){
   		game.width(pantallaX)
   		game.height(pantallaY)
@@ -38,15 +38,17 @@ object juego{
   		game.whenCollideDo(jugador, { elemento =>  elemento.colisionJugador() })
   		//DISPARAR
   		keyboard.enter().onPressDo { jugador.disparar() } 
-  		//COLISION CON BALAS - REVISAR	
-  		game.onTick(10, "sprint", { jugador.balas().forEach({b => b.colisionEnemigo()}) })			
+  		//COLISION CON BALAS - REVISAR
+  		game.onTick(100, "sprint", { jugador.balas().forEach({b => 
+  															game.whenCollideDo(b, { objeto => 
+    								  						objeto.colisionBala(b)}) }) })			
   		//MOVER ENEMIGOS
   		game.onTick(500, "mover_enemigos", {self.moverEnemigos()}) 
   		//MOVER BALAS
   		game.onTick(100*jugador.armaActual().velocidad(), "movers_balas", {self.moverBalas()})
   		//SPRINTS
   		self.gestionarSprints()
-  		//AUMENTAR DIFICULTAD
+  		//AUMENTAR DIFICULTAD - REVISAR
   		//game.onTick(1000, "aumentar_dificultad", {self.aumentarDificultad()} )
   		//SPAWNEAR ENEMIGOS
   		self.spawnearEnemigos(tiempoDeSpawn)
@@ -70,33 +72,17 @@ object juego{
   
   	method spawnearEnemigos(tiempo){
   		game.onTick(tiempo, "crearAlien", {
-  			const alien = new Alien(  image = "enemigo1.png", 
-  										position = game.at(pantallaX - 1, 0.randomUpTo(pantallaY)), 
-  										irAbajo = 1.randomUpTo(0),
-  										sonidoDestroy = game.sound("alienDeath.wav"),
-  										tiempoDeathSound = 300,
-  										vida = 1
-  									  )
+  			const alien = self.crearAlien()
   			game.addVisual(alien)
   			enemigos.add(alien)										
   		})
   		game.onTick(tiempo + 3000 , "crearUfo", {
-  			const ufo = new Ufo(  image = "U1.png", 
-  										position = game.at(pantallaX - 1, 0.randomUpTo(pantallaY)), 
-  										sonidoDestroy = game.sound("alienDeath.wav"),
-  										tiempoDeathSound = 300,
-  										vida = 2
-  									  )
+  			const ufo = self.crearUfo()
   			game.addVisual(ufo)
   			enemigos.add(ufo)										
   		})
-  		game.onTick(tiempo + 3000 , "crearUfo", {
-  			const nave = new NaveX(  image = "B1.png", 
-  										position = game.at(0.randomUpTo(pantallaX), pantallaY - 1), 
-  										sonidoDestroy = game.sound("alienDeath.wav"),
-  										tiempoDeathSound = 300,
-  										vida = 3
-  									  )
+  		game.onTick(tiempo + 5000 , "crearNaveX", {
+  			const nave = self.crearNaveX()
   			game.addVisual(nave)
   			enemigos.add(nave)										
   		})
@@ -104,13 +90,13 @@ object juego{
   	
   	method anadirVidas(){
  	//Vida 1
-  			game.addVisual(vida1)  	
+  			self.imprimir(vida1)  	
 	//Vida 2
-  			game.addVisual(vida2)  		  	
+  			self.imprimir(vida2)  		  	
 	//Vida 3
-  			game.addVisual(vida3)  		
+  			self.imprimir(vida3)  		
   	//ARMA ACTUAL (NO VA ACA)
-  			game.addVisual(armaActual)  	
+  			self.imprimir(armaActual)  	
   	}
   	
   	method moverEnemigos(){
@@ -133,6 +119,42 @@ object juego{
   		if(tiempoDeSpawn > 500){
   			tiempoDeSpawn -= 100	
   		}
+  	}
+  	method gameOver(){
+  		musicaDeFondo.stop()
+  		musicaGameOver.play()
+  		game.schedule(1000, {self.imprimir(gameOver)})
+  		
+  		
+  	}
+  	method imprimir(algo){
+  		game.addVisual(algo)
+  	}
+  	method crearAlien(){
+  		return new Alien(  image = "enemigo1.png", 
+  										position = game.at(pantallaX - 1, 0.randomUpTo(pantallaY)), 
+  										irAbajo = 1.randomUpTo(0),
+  										sonidoDestroy = game.sound("alienDeath.wav"),
+  										tiempoDeathSound = 300,
+  										vida = 1
+  									  )
+  	}
+  	method crearUfo(){
+  		return new Ufo(  image = "U1.png", 
+  										position = game.at(pantallaX - 1, 5), 
+  										sonidoDestroy = game.sound("alienDeath.wav"),
+  										tiempoDeathSound = 300,
+  										vida = 2
+  									  )
+  	}
+  	method crearNaveX(){
+  		return new NaveX(  image = "B1.png", 
+  										//position = game.at(pantallaX - 1, 0.randomUpTo(pantallaY)), 
+  										position = game.at(0.randomUpTo(pantallaX), pantallaY - 1),
+  										sonidoDestroy = game.sound("alienDeath.wav"),
+  										tiempoDeathSound = 300,
+  										vida = 3
+  									  )
   	}
 }
 

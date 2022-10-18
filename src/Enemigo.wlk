@@ -6,37 +6,39 @@ class Enemigo inherits Character {
   	var tiempoSprint = 50
   	var vida
  	
- 	method colision(){
+ 	override method colisionBala(bala){
+ 		bala.colisionEnemigo()
  		vida--
  		if(vida <= 0){
- 			juego.enemigos().remove(self)
     		self.destroy()
  		}
+ 		
  	}
- 	method colisionJugador(){
+ 	override method colisionJugador(){
  		juego.jugador().colisionEnemigo()
     	juego.enemigos().remove(self)
     	self.destroy()
  	}
- 	
+ 	override method removermeDeListas(){
+ 		juego.enemigos().remove(self)
+ 	}
 }
 
 class Alien inherits Enemigo {
 	var irAbajo
 	
 	method moverse(){
- 			self.verificarLimitaciones()
+ 			self.verificarSentido()
  			if(irAbajo == 1){position = position.down(1).left(1)}
  			else{position = position.up(1).left(1)}
  	}
- 	method verificarLimitaciones(){
+ 	method verificarSentido(){
  		if( position.y() <= 0 ){
  			irAbajo = 0
  		}
  		if( position.y() >= 13){
  			irAbajo = 1
  		}
- 		if(position.x() < 0){juego.enemigos().remove(self) game.removeVisual(self)}
  	}
 	
 	method cambiarImagen(){ 
@@ -65,9 +67,6 @@ class Ufo inherits Enemigo {
  			self.verificarLimitaciones()
  			position = position.left(1)		
  	}
- 	method verificarLimitaciones(){
- 		if(position.x() < 0){juego.enemigos().remove(self) game.removeVisual(self)}
- 	}
 	
 	method cambiarImagen(){ 
  		game.schedule(tiempoSprint, {image = "U2.png"})
@@ -83,10 +82,17 @@ class NaveX inherits Enemigo {
 	
 	method moverse(){
  			self.verificarLimitaciones()
- 			position = position.down(1)		
- 	}
- 	method verificarLimitaciones(){
- 		if(position.y() < 0){juego.enemigos().remove(self) game.removeVisual(self)}
+ 			position = position.down(1)
+ 			/*const posY = juego.jugador().position().y()
+ 			if(posY < position.y()){
+ 				position = position.down(1).right(1)
+ 			}
+ 			else if(posY > position.y()){
+ 				position = position.up(1).right(1)
+ 			}
+ 			else if(posY == position.y()){
+ 				position = position.right(1)
+ 			}*/		
  	}
 	
 	method cambiarImagen(){ 

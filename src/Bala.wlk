@@ -12,23 +12,16 @@ var property funcionamiento = misil
  		position = position.right(1)
  	}
  	
- 	method verificarLimitaciones(){
- 		if(position.x() > juego.pantallaX()){
- 			juego.jugador().balas().remove(self) 
- 			game.removeVisual(self)
- 		}
- 	}
- 	
- 	method colisionEnemigo(){
-  		game.whenCollideDo(self, { objeto => 
-    								  objeto.colision()
-    								  juego.jugador().balas().remove(self)
-    								  self.destroy()})
+ 	override method colisionEnemigo(){
+  		/*game.whenCollideDo(self, { objeto => 
+    								  objeto.colisionBala()
+    								  self.destroy()})*/
+    	self.destroy()
   	}
   	
-  	method colisionJugador(){}
-  	
-  	method colision(){}
+  	override method removermeDeListas(){
+ 		juego.jugador().balas().remove(self)
+ 	}
 }
 
 object bala {

@@ -34,8 +34,8 @@ class Jugador inherits Character{
   		balas.add(bala)	
   	}	
   }
-  method colision(){}
-  method colisionEnemigo(){
+  
+  override method colisionEnemigo(){
   	game.say(self, "Auch")
     		
     if(vida == 3){
@@ -51,6 +51,7 @@ class Jugador inherits Character{
     vida --
     		
     if(vida == 0){
+    	juego.gameOver()
     	self.destroy()
     }
   }

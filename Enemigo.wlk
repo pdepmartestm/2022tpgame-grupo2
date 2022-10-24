@@ -4,9 +4,10 @@ import juego.*
 
 class Enemigo inherits Character (position = game.at(juego.pantallaX() - 1, 0.randomUpTo(juego.pantallaY())), 
   								  sonidoDestroy = game.sound("alienDeath.wav")){
-  	var tiempoSprint = 50
   	var vida
   	var tipoMovimiento
+  	var cantSprint
+  	var SprintHint
  	
  	override method colisionBala(bala){
  		bala.colisionEnemigo()
@@ -29,10 +30,13 @@ class Enemigo inherits Character (position = game.at(juego.pantallaX() - 1, 0.ra
  		self.verificarLimitaciones()
  		position = tipoMovimiento.mover(position) 
  	}
+ 	method cambiarImagen(){ 
+		cantSprint.times({b => game.schedule((800/cantSprint) * b, {image = SprintHint+ b +".png"})})
+ 	}
 }
 
 
-class Alien inherits Enemigo (image = "enemigo1.png", tiempoDeathSound = 300, vida = 2, tipoMovimiento = movimientoAlternado){
+class Alien inherits Enemigo (image = "enemigo1.png", tiempoDeathSound = 300, vida = 2, tipoMovimiento = movimientoAlternado, cantSprint = 16, SprintHint = "enemigo"){
 	var irAbajo
 	override method moverse(){
 		self.verificarLimitaciones()
@@ -47,22 +51,9 @@ class Alien inherits Enemigo (image = "enemigo1.png", tiempoDeathSound = 300, vi
  			irAbajo = true
  		}
  	}
-	method cambiarImagen(){ 
-		16.times({b => game.schedule(tiempoSprint * b, {image = "enemigo"+ b +".png"})})
- 	}
+	
 }
 
-class Ufo inherits Enemigo (image = "U1.png",  tiempoDeathSound = 300, vida = 1, tipoMovimiento = movimientoRectilineoIzquierdo){
-	method cambiarImagen(){ 
-		6.times({b => game.schedule(tiempoSprint * b, {image = "U"+ b +".png"})})
- 	}
-}
-
-class NaveX inherits Enemigo ( image = "B1.png", tiempoDeathSound = 300, vida = 3, tipoMovimiento = movimientoDirigido) {
-	method cambiarImagen(){
-		10.times({b => game.schedule(tiempoSprint * b, {image = "B"+ b +".png"})})
- 	}
-}
 
 object movimientoAlternado{
 	

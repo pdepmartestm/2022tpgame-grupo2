@@ -8,7 +8,6 @@ class Jugador inherits Character{
   const tiempoSprint = 75
   const property balas = []
   var property armaActual = bala
-  //const sonidoDisparo = game.sound("disparo.wav")
   
   method cambiarImagen(){ //Hacerlo generico con un for y concatenacion
   	game.onTick(300, "sprint", {
@@ -34,7 +33,6 @@ class Jugador inherits Character{
   }
   
   override method colisionEnemigo(){
-  	//game.say(self, "Auch")
     		
     if(vida == 3){
     	juego.vida3().morir()

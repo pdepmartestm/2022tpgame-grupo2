@@ -10,26 +10,26 @@ object juego{
 	const property pantallaY = 14
 	const property enemigos = []
 	const property jugador = new Jugador(image = "jugador1.png", 
-							position = game.origin(), 
+							position = game.at(0,7), 
 							sonidoDestroy = game.sound("death.wav"),
 							tiempoDeathSound = 1000
 							)
 	const property musicaDeFondo = game.sound("BackgroundSound.mp3")
 	const musicaGameOver = game.sound("gameOver.mp3")
 	const property fondo = new Imprimible(image = "background.jpg", position = game.at(0,0))
-	const property menuImagen = new Imprimible(image = "menu.jpg", position = game.at(0,0))
+	
   	const property vida1 = new Vida(position = game.at(0, 13))
   	const property vida2 = new Vida(position = game.at(1, 13))
   	const property vida3 = new Vida(position = game.at(2, 13))
   	
 	const property armaActual = new Imprimible(position = game.at(0, 12), image = jugador.armaActual().icon())
-	const gameOver = new Imprimible(position = game.at(10, 8), image = "gameOver.png")
+	const gameOver = new Imprimible(position = game.at(10, 6), image = "gameOver.png")
   	method iniciar(){
   		game.width(pantallaX)
   		game.height(pantallaY)
   		game.cellSize(50)
   		game.title("Juego")
-  		game.addVisual(menuImagen)
+  		
   		game.boardGround("background.jpg")
   	
   		
@@ -39,7 +39,7 @@ object juego{
   		game.onTick(100, "movers_balas", {self.moverBalas()})
   		//SPRINTS
   		self.gestionarSprints()
-  		//INICIAR NIVELES
+  		//INICIAR
   		game.schedule(10,{menu.correrRutina()})	
   	}
   	
@@ -69,7 +69,8 @@ object juego{
   	method game_Over(){
   		musicaDeFondo.stop()
   		musicaGameOver.play()
-  		game.schedule(1000, {self.imprimir(gameOver)})
+  		game.schedule(500, {self.imprimir(gameOver)})
+  		game.schedule(5500, {game.stop()})
   	}
   	method imprimir(algo){
   		game.addVisual(algo)
@@ -78,7 +79,7 @@ object juego{
   		//COLISION CON ENEMIGOS
   		game.whenCollideDo(jugador, { elemento =>  elemento.colisionJugador() })
   		//DISPARAR
-  		keyboard.enter().onPressDo { jugador.disparar() } 
+  		keyboard.space().onPressDo { jugador.disparar() } 
   		//COLISION CON BALAS - REVISAR
   		game.onTick(100, "sprint", { jugador.balas().forEach({b => 
   															game.whenCollideDo(b, { objeto => 
@@ -112,17 +113,26 @@ class Nivel{
 	}
 	method spawnearUfos(tiempo){
 		game.onTick(tiempo , "crearUfo", {
-  			const ufo = new Ufo()
+  			const ufo = self.crearUfo()
   			game.addVisual(ufo)
   			juego.enemigos().add(ufo)								
   		})
 	}
 	method spawnearNavesX(tiempo){
 		game.onTick(tiempo , "crearNaveX", {
-  			const nave = new NaveX()
+  			const nave = self.crearNaveX()
   			game.addVisual(nave)
   			juego.enemigos().add(nave)								
   		})
+	}
+	method crearAlien(){
+		return new Alien(irAbajo = 0.randomUpTo(1))
+	}
+	method crearUfo(){
+		return new Enemigo (image = "U1.png",  tiempoDeathSound = 300, vida = 1, tipoMovimiento = movimientoRectilineoIzquierdo, cantSprint = 6, SprintHint = "U");
+	}
+	method crearNaveX(){
+		return new Enemigo ( image = "B1.png", tiempoDeathSound = 300, vida = 3, tipoMovimiento = movimientoDirigido, cantSprint = 10, SprintHint = "B");
 	}
 }
 object nivel1 inherits Nivel{
@@ -194,18 +204,23 @@ object nivel3 inherits Nivel{
 }
 object menu {
 	const menuMusic = game.sound("intro.mp3")
+	const property menuImagen = new Imprimible(image = "menu.jpg", position = game.at(0,0))
+	const property pressStart = new Imprimible(image = "pressStart.png", position = game.at(6,0))
 	var trigger
 	method correrRutina(){
 		trigger =  true
+		game.addVisual(menuImagen)
+		self.efectoLetrero(pressStart)
 		menuMusic.play()
 		menuMusic.shouldLoop(true)
-		keyboard.space().onPressDo {self.finalizar()}
+		keyboard.enter().onPressDo {self.finalizar()}
 			
 	}
 	method finalizar(){
 		if(trigger){
 			menuMusic.stop()
-			game.removeVisual(juego.menuImagen())
+			game.removeVisual(menuImagen)
+			self.eliminarEfectoLetrero(pressStart)
 			juego.musicaDeFondo().play()
 			juego.musicaDeFondo().shouldLoop(true)
 			game.addVisualCharacter(juego.jugador())
@@ -214,5 +229,16 @@ object menu {
 			nivel1.correrRutina()
 		}
 		trigger = false
+	}
+	method efectoLetrero(imagen){
+		game.addVisual(imagen)
+		game.schedule(500,{game.removeVisual(imagen)})
+		game.onTick(1000, "parpadear_"+imagen.image(), {  
+			game.addVisual(imagen)
+			game.schedule(500,{game.removeVisual(imagen)})
+		})
+	}
+	method eliminarEfectoLetrero(imagen){
+		game.removeTickEvent("parpadear_"+imagen.image())
 	}
 }

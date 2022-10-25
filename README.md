@@ -19,8 +19,8 @@
 ## Reglas de Juego / Instrucciones
 
 - Iniciar Juego -> <kbd>Enter</kbd>
-- Disparar -> <kbd>&larr;</kbd>,<kbd>&uarr;</kbd>,<kbd>&darr;</kbd>,<kbd>&rarr;</kbd>
-- Moverse -> <kbd>Space</kbd>
+- Disparar -> <kbd>Space</kbd>
+- Moverse -> <kbd>&larr;</kbd>,<kbd>&uarr;</kbd>,<kbd>&darr;</kbd>,<kbd>&rarr;</kbd>
 - Cambiar armas -> <kbd>1</kbd>, <kbd>2</kbd>, <kbd>3</kbd>
 
 - Eliminar enemigos al dispararles

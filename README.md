@@ -9,7 +9,12 @@
 
 ## Capturas
 
-(agregar)
+![1](https://user-images.githubusercontent.com/57404639/197752032-90665e1e-338e-4755-a9ed-ab61244d0b28.png)
+![2](https://user-images.githubusercontent.com/57404639/197752039-ef43349e-25ca-440d-bf55-a52fabb53c51.png)
+![3](https://user-images.githubusercontent.com/57404639/197752043-2dbc17ac-5095-41e5-898d-085f38735a7a.png)
+![4](https://user-images.githubusercontent.com/57404639/197752047-c95e35ae-e1f5-40ad-ab33-f5eefb172a85.png)
+![5](https://user-images.githubusercontent.com/57404639/197752051-3aab03cc-ea3a-4678-9158-d248940ac813.png)
+
 
 ## Reglas de Juego / Instrucciones
 

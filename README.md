@@ -18,10 +18,10 @@
 
 ## Reglas de Juego / Instrucciones
 
-- Iniciar Juego -> Enter
-- Disparar -> Space
-- Moverse -> Flechas
-- Cambiar armas -> 1, 2, 3
+- Iniciar Juego -> <kbd>Enter</kbd>
+- Disparar -> <kbd>&larr;</kbd>,<kbd>&uarr;</kbd>,<kbd>&darr;</kbd>,<kbd>&rarr;</kbd>
+- Moverse -> <kbd>Space</kbd>
+- Cambiar armas -> <kbd>1</kbd>, <kbd>2</kbd>, <kbd>3</kbd>
 
 - Eliminar enemigos al dispararles
 - El jugador tiene 3 vidas, pierde una vida si choca con un enemigo (El enemigo se eliminar al chocar tambien)
